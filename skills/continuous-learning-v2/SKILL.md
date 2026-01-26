@@ -135,7 +135,8 @@ The observer can run in the background analyzing observations:
 
 | Command | Description |
 |---------|-------------|
-| `/instinct-status` | Show all learned instincts with confidence |
+| `/identity-init` | Initialize your identity profile for personalized learning |
+| `/instinct-status` | Show identity + all learned instincts with confidence |
 | `/evolve` | Cluster related instincts into skills/commands |
 | `/instinct-export` | Export instincts for sharing |
 | `/instinct-import <file>` | Import instincts from others |
@@ -182,7 +183,7 @@ Edit `config.json`:
 
 ```
 ~/.claude/homunculus/
-├── identity.json           # Your profile, technical level
+├── identity.json           # Your profile, technical level (NEW in v2.1)
 ├── observations.jsonl      # Current session observations
 ├── observations.archive/   # Processed observations
 ├── instincts/
@@ -193,6 +194,45 @@ Edit `config.json`:
     ├── skills/             # Generated skills
     └── commands/           # Generated commands
 ```
+
+## Identity Profile (v2.1)
+
+The identity profile personalizes how Claude learns from your sessions.
+
+### Initialize Your Profile
+
+Run `/identity-init` to create `~/.claude/homunculus/identity.json`:
+
+```json
+{
+  "version": "2.0",
+  "technicalLevel": "technical",
+  "preferredStyle": {
+    "verbosity": "moderate",
+    "codeComments": true,
+    "explanations": true
+  },
+  "domains": ["typescript", "react", "cloudflare"],
+  "createdAt": "2025-01-25T00:00:00Z",
+  "updatedAt": "2025-01-25T00:00:00Z"
+}
+```
+
+### Technical Levels
+
+| Level | Instinct Style |
+|-------|----------------|
+| **technical** | Brief triggers, code-focused actions |
+| **semi-technical** | Moderate explanations with context |
+| **non-technical** | Detailed step-by-step actions |
+| **chaotic** | Creative/experimental suggestions |
+
+### How It Affects Learning
+
+1. **Instinct Verbosity**: Non-technical users get more detailed instinct actions
+2. **Domain Boosting**: Patterns in your domains get +0.1 confidence
+3. **Code Comments**: Controls whether generated code includes comments
+4. **Explanations**: Controls depth of "why" explanations in instincts
 
 ## Integration with Skill Creator
 

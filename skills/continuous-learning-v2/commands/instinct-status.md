@@ -25,15 +25,27 @@ python3 ~/.claude/skills/continuous-learning-v2/scripts/instinct-cli.py status
 
 ## What to Do
 
-1. Read all instinct files from `~/.claude/homunculus/instincts/personal/`
-2. Read inherited instincts from `~/.claude/homunculus/instincts/inherited/`
-3. Display them grouped by domain with confidence bars
+1. **Read identity profile** from `~/.claude/homunculus/identity.json` (if exists)
+2. Read all instinct files from `~/.claude/homunculus/instincts/personal/`
+3. Read inherited instincts from `~/.claude/homunculus/instincts/inherited/`
+4. Display identity summary, then instincts grouped by domain with confidence bars
 
 ## Output Format
 
 ```
 📊 Instinct Status
 ==================
+
+## 🪪 Identity Profile
+
+| Setting | Value |
+|---------|-------|
+| Technical Level | technical |
+| Verbosity | moderate |
+| Domains | typescript, react, cloudflare |
+| Last Updated | 2025-01-25 |
+
+> Run /identity-init to update your profile
 
 ## Code Style (4 instincts)
 

@@ -1,5 +1,16 @@
 {
-  "version": "2.0",
+  "version": "2.1",
+  "identity": {
+    "enabled": true,
+    "path": "~/.claude/homunculus/identity.json",
+    "auto_detect_level": true,
+    "defaults": {
+      "technicalLevel": "technical",
+      "verbosity": "moderate",
+      "codeComments": true,
+      "explanations": true
+    }
+  },
   "observation": {
     "enabled": true,
     "store_path": "~/.claude/homunculus/observations.jsonl",

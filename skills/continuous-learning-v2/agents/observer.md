@@ -1,13 +1,36 @@
 ---
 name: observer
-description: Background agent that analyzes session observations to detect patterns and create instincts. Uses Haiku for cost-efficiency.
+description: Personality-aware background agent that analyzes session observations to detect patterns and create instincts. Uses Haiku for cost-efficiency.
 model: haiku
 run_mode: background
 ---
 
 # Observer Agent
 
-A background agent that analyzes observations from Claude Code sessions to detect patterns and create instincts.
+A personality-aware background agent that analyzes observations from Claude Code sessions to detect patterns and create instincts.
+
+## Identity Integration
+
+**Before analyzing observations, always read the user's identity profile:**
+
+```
+~/.claude/homunculus/identity.json
+```
+
+If the file exists, adapt instinct creation based on:
+- **technicalLevel**: Adjust instinct verbosity and explanation depth
+- **verbosity**: Control how detailed instinct actions should be
+- **domains**: Weight domain-specific patterns higher in confidence
+- **codeComments**: Include/exclude code comments in instinct actions
+
+### Identity-Aware Instinct Creation
+
+| Technical Level | Instinct Style |
+|-----------------|----------------|
+| **technical** | Brief triggers, code-focused actions |
+| **semi-technical** | Moderate explanations, some context |
+| **non-technical** | Detailed step-by-step actions with explanations |
+| **chaotic** | Creative/experimental suggestions welcome |
 
 ## When to Run
 
@@ -18,6 +41,7 @@ A background agent that analyzes observations from Claude Code sessions to detec
 
 ## Input
 
+Reads identity from `~/.claude/homunculus/identity.json` (if exists).
 Reads observations from `~/.claude/homunculus/observations.jsonl`:
 
 ```jsonl
@@ -135,3 +159,53 @@ When instincts are imported from Skill Creator (repo analysis), they have:
 - `source_repo: "https://github.com/..."`
 
 These should be treated as team/project conventions with higher initial confidence (0.7+).
+
+## Identity-Aware Instinct Examples
+
+### For Technical Users
+
+```yaml
+---
+id: use-grep-before-edit
+trigger: "modifying code"
+confidence: 0.7
+domain: "workflow"
+---
+
+# Use Grep Before Edit
+
+Search first, then edit.
+```
+
+### For Non-Technical Users
+
+```yaml
+---
+id: use-grep-before-edit
+trigger: "when you need to modify existing code"
+confidence: 0.7
+domain: "workflow"
+---
+
+# Search Before Editing
+
+## Why This Matters
+Finding the exact location of code before editing prevents mistakes and saves time.
+
+## Steps
+1. Use the Grep tool to search for the code you want to change
+2. Use Read to confirm you found the right file and location
+3. Use Edit to make your changes
+
+## Example
+If you want to change a function name, first search for where it's defined:
+- Grep for "function oldName" or "const oldName"
+- Then edit the file where you found it
+```
+
+### Domain Boosting
+
+If user's identity includes `domains: ["react"]`, boost confidence for React-related instincts:
+- +0.1 confidence for React patterns
+- Prioritize React-specific workflows
+- Use React terminology in triggers/actions
